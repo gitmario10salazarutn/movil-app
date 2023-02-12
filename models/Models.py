@@ -357,10 +357,9 @@ class Model:
         try:
             connection = conn.get_connection()
             with connection.cursor() as cursor:
-                cursor.execute("INSERT INTO punto(coord_x, coord_y) values({0}, {1})".format(
+                cursor.execute("INSERT INTO punto(coord_x, coord_y) values({0}, {1}) RETURNING id_punto".format(
                     data['coord_x'], data['coord_y']))
                 rows_affects = cursor.rowcount
-                cursor.execute("SELECT LAST_INSERT_ID();")
                 id_point = cursor.fetchone()[0]
                 connection.commit()
                 if rows_affects > 0:
@@ -377,17 +376,14 @@ class Model:
         try:
             connection = conn.get_connection()
             with connection.cursor() as cursor:
-                cursor.execute("INSERT INTO punto(coord_x, coord_y) values({0}, {1})".format(
+                cursor.execute("INSERT INTO punto(coord_x, coord_y) values({0}, {1}) RETURNING id_punto".format(
                     data['coord_xa'], data['coord_ya']))
-                cursor.execute("SELECT LAST_INSERT_ID();")
                 id_point_a = cursor.fetchone()[0]
-                cursor.execute("INSERT INTO punto(coord_x, coord_y) values({0}, {1})".format(
+                cursor.execute("INSERT INTO punto(coord_x, coord_y) values({0}, {1}) RETURNING id_punto".format(
                     data['coord_xb'], data['coord_yb']))
-                cursor.execute("SELECT LAST_INSERT_ID();")
                 id_point_b = cursor.fetchone()[0]
-                cursor.execute("INSERT INTO recta(punto_a, punto_b) values({0}, {1})".format(
+                cursor.execute("INSERT INTO recta(punto_a, punto_b) values({0}, {1}) RETURNING id_recta".format(
                     id_point_a, id_point_b))
-                cursor.execute("SELECT LAST_INSERT_ID();")
                 id_line = cursor.fetchone()[0]
                 rows_affects = cursor.rowcount
                 connection.commit()
@@ -408,13 +404,11 @@ class Model:
         try:
             connection = conn.get_connection()
             with connection.cursor() as cursor:
-                cursor.execute("INSERT INTO punto(coord_x, coord_y) values({0}, {1})".format(
+                cursor.execute("INSERT INTO punto(coord_x, coord_y) values({0}, {1}) RETURNING id_punto".format(
                     data['coord_x'], data['coord_y']))
-                cursor.execute("SELECT LAST_INSERT_ID();")
                 id_point = cursor.fetchone()[0]
-                cursor.execute("INSERT INTO circunferencia(centro, radio) values({0}, {1})".format(
+                cursor.execute("INSERT INTO circunferencia(centro, radio) values({0}, {1}) RETURNING id_circunferencia".format(
                     id_point, data['radio']))
-                cursor.execute("SELECT LAST_INSERT_ID();")
                 id_circunference = cursor.fetchone()[0]
                 rows_affects = cursor.rowcount
                 connection.commit()
@@ -434,13 +428,11 @@ class Model:
         try:
             connection = conn.get_connection()
             with connection.cursor() as cursor:
-                cursor.execute("INSERT INTO punto(coord_x, coord_y) values({0}, {1})".format(
+                cursor.execute("INSERT INTO punto(coord_x, coord_y) values({0}, {1}) RETURNING id_punto".format(
                     data['coord_x'], data['coord_y']))
-                cursor.execute("SELECT LAST_INSERT_ID();")
                 id_point = cursor.fetchone()[0]
-                cursor.execute("INSERT INTO parabola(vertice, p, eje_focal) values({0}, {1}, '{2}')".format(
+                cursor.execute("INSERT INTO parabola(vertice, p, eje_focal) values({0}, {1}, '{2}') RETURNING id_parabola".format(
                     id_point, data['p'], data['eje_focal']))
-                cursor.execute("SELECT LAST_INSERT_ID();")
                 id_parabola = cursor.fetchone()[0]
                 rows_affects = cursor.rowcount
                 connection.commit()
@@ -460,13 +452,11 @@ class Model:
         try:
             connection = conn.get_connection()
             with connection.cursor() as cursor:
-                cursor.execute("INSERT INTO punto(coord_x, coord_y) values({0}, {1})".format(
+                cursor.execute("INSERT INTO punto(coord_x, coord_y) values({0}, {1}) RETURNING id_punto".format(
                     data['coord_x'], data['coord_y']))
-                cursor.execute("SELECT LAST_INSERT_ID();")
                 id_point = cursor.fetchone()[0]
-                cursor.execute("INSERT INTO elipse(centro, a,  b, eje_focal) values({0}, {1}, {2}, '{3}')".format(
+                cursor.execute("INSERT INTO elipse(centro, a,  b, eje_focal) values({0}, {1}, {2}, '{3}') RETURNING id_elipse".format(
                     id_point, data['a'], data['b'], data['eje_focal']))
-                cursor.execute("SELECT LAST_INSERT_ID();")
                 id_elipse = cursor.fetchone()[0]
                 rows_affects = cursor.rowcount
                 connection.commit()
@@ -486,13 +476,11 @@ class Model:
         try:
             connection = conn.get_connection()
             with connection.cursor() as cursor:
-                cursor.execute("INSERT INTO punto(coord_x, coord_y) values({0}, {1})".format(
+                cursor.execute("INSERT INTO punto(coord_x, coord_y) values({0}, {1}) RETURNING id_punto".format(
                     data['coord_x'], data['coord_y']))
-                cursor.execute("SELECT LAST_INSERT_ID();")
                 id_point = cursor.fetchone()[0]
-                cursor.execute("INSERT INTO hiperbola(centro, a,  b, eje_focal) values({0}, {1}, {2}, '{3}')".format(
+                cursor.execute("INSERT INTO hiperbola(centro, a,  b, eje_focal) values({0}, {1}, {2}, '{3}') RETURNING id_hiperbola".format(
                     id_point, data['a'], data['b'], data['eje_focal']))
-                cursor.execute("SELECT LAST_INSERT_ID();")
                 id_hiperbola = cursor.fetchone()[0]
                 rows_affects = cursor.rowcount
                 connection.commit()
@@ -533,13 +521,11 @@ class Model:
         try:
             connection = conn.get_connection()
             with connection.cursor() as cursor:
-                cursor.execute("INSERT INTO punto(coord_x, coord_y) values({0}, {1})".format(
+                cursor.execute("INSERT INTO punto(coord_x, coord_y) values({0}, {1}) RETURNING id_punto".format(
                     data['coord_xa'], data['coord_ya']))
-                cursor.execute("SELECT LAST_INSERT_ID();")
                 id_point_a = cursor.fetchone()[0]
-                cursor.execute("INSERT INTO punto(coord_x, coord_y) values({0}, {1})".format(
+                cursor.execute("INSERT INTO punto(coord_x, coord_y) values({0}, {1}) RETURNING id_punto".format(
                     data['coord_xb'], data['coord_yb']))
-                cursor.execute("SELECT LAST_INSERT_ID();")
                 id_point_b = cursor.fetchone()[0]
                 cursor.execute("UPDATE recta SET punto_a = {0}, punto_b = {1} WHERE id_recta = {2}".format(
                     id_point_a, id_point_b, id_line))
@@ -562,9 +548,8 @@ class Model:
         try:
             connection = conn.get_connection()
             with connection.cursor() as cursor:
-                cursor.execute("INSERT INTO punto(coord_x, coord_y) values({0}, {1})".format(
+                cursor.execute("INSERT INTO punto(coord_x, coord_y) values({0}, {1}) RETURNING id_punto".format(
                     data['coord_x'], data['coord_y']))
-                cursor.execute("SELECT LAST_INSERT_ID();")
                 id_point = cursor.fetchone()[0]
                 cursor.execute("UPDATE circunferencia SET centro = {0}, radio = {1} WHERE id_circunferencia = {2}".format(
                     id_point, data['radio'], id_circunferencia))
@@ -586,9 +571,8 @@ class Model:
         try:
             connection = conn.get_connection()
             with connection.cursor() as cursor:
-                cursor.execute("INSERT INTO punto(coord_x, coord_y) values({0}, {1})".format(
+                cursor.execute("INSERT INTO punto(coord_x, coord_y) values({0}, {1}) RETURNING id_punto".format(
                     data['coord_x'], data['coord_y']))
-                cursor.execute("SELECT LAST_INSERT_ID();")
                 id_point = cursor.fetchone()[0]
                 cursor.execute("UPDATE parabola SET vertice = {0}, p = {1}, eje_focal = '{2}' WHERE id_parabola = {3}".format(
                     id_point, data['p'], data['eje_focal'], id_parabola))
@@ -610,9 +594,8 @@ class Model:
         try:
             connection = conn.get_connection()
             with connection.cursor() as cursor:
-                cursor.execute("INSERT INTO punto(coord_x, coord_y) values({0}, {1})".format(
+                cursor.execute("INSERT INTO punto(coord_x, coord_y) values({0}, {1}) RETURNING id_punto".format(
                     data['coord_x'], data['coord_y']))
-                cursor.execute("SELECT LAST_INSERT_ID();")
                 id_point = cursor.fetchone()[0]
                 cursor.execute("UPDATE elipse SET centro = {0}, a = {1}, b = {2}, eje_focal = '{3}' WHERE id_elipse = {4}".format(
                     id_point, data['a'], data['b'], data['eje_focal'], id_elipse))
@@ -634,9 +617,8 @@ class Model:
         try:
             connection = conn.get_connection()
             with connection.cursor() as cursor:
-                cursor.execute("INSERT INTO punto(coord_x, coord_y) values({0}, {1})".format(
+                cursor.execute("INSERT INTO punto(coord_x, coord_y) values({0}, {1}) RETURNING id_punto".format(
                     data['coord_x'], data['coord_y']))
-                cursor.execute("SELECT LAST_INSERT_ID();")
                 id_point = cursor.fetchone()[0]
                 cursor.execute("UPDATE hiperbola SET centro = {0}, a = {1}, b = {2}, eje_focal = '{3}' WHERE id_hiperbola = {4}".format(
                     id_point, data['a'], data['b'], data['eje_focal'], id_hiperbola))

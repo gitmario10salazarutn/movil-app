@@ -1276,6 +1276,64 @@ insert into hiperbola (centro, a, b, eje_focal)
 values (2, 23.89, 15.08, 'y');
 insert into hiperbola (centro, a, b, eje_focal)
 values (19, 21.09, 15.37, 'y');
+-- PSQL --- 
+create view get_lines as
+select r.id_recta as id,
+    pa.id_punto as id_puntoa,
+    pa.coord_x as coord_xa,
+    pa.coord_y as coord_ya,
+    pb.id_punto id_puntob,
+    pb.coord_x as coord_xb,
+    pb.coord_y as coord_yb
+from punto pa,
+    recta r,
+    punto pb
+where r.punto_a = pa.id_punto
+    and r.punto_b = pb.id_punto;
+------
+create view get_circunferences as
+select c.id_circunferencia as id,
+    c.radio as radio,
+    p.id_punto as id_punto,
+    p.coord_x as coord_x,
+    p.coord_y as coord_y
+from circunferencia c
+    inner join punto p on c.centro = p.id_punto;
+----
+create view get_elipses as
+select e.id_elipse as id,
+    e.a as a,
+    e.b as b,
+    e.eje_focal as eje_focal,
+    p.id_punto as id_punto,
+    p.coord_x as coord_x,
+    p.coord_y as coord_y
+from elipse e
+    inner join punto p on e.centro = p.id_punto;
+----
+create view get_hiperbolas as
+select h.id_hiperbola as id,
+    h.a as a,
+    h.b as b,
+    h.eje_focal as eje_focal,
+    p.id_punto as id_punto,
+    p.coord_x as coord_x,
+    p.coord_y as coord_y
+from hiperbola h
+    inner join punto p on h.centro = p.id_punto;
+-----
+create view get_parabolas as
+select p.id_parabola as id,
+    p.p as p,
+    p.eje_focal as eje_focal,
+    v.id_punto as id_punto,
+    v.coord_x as coord_x,
+    v.coord_y as coord_y
+from parabola p
+    inner join punto v on p.vertice = v.id_punto;
+select *
+from get_elipses ge;
+-------
 go create procedure get_points as
 declare @point nvarchar(max)
 set @point = (
