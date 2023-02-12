@@ -20,7 +20,7 @@ def connect_postgresql(hostname, dbname, username, password):
     except Exception as e:
         # Atrapar error
         print("Ocurrió un error al conectar a PostgreSQL: ", e)
-        raise Exception(e)
+"""        raise Exception(e)
 
 def get_points(username, password, hostname, database, port):
     try:
@@ -29,7 +29,7 @@ def get_points(username, password, hostname, database, port):
         return db
     except Exception as ex:
         return "Error to connect to MySQL: {0}".format(ex)
-
+"""
 def get_connection():
     try:
         connection = connect_postgresql(
@@ -42,6 +42,7 @@ def get_connection():
     except Exception as ex:
         raise ex
 
+"""
 
 def get_connectionMySQL():
     try:
@@ -54,4 +55,4 @@ def get_connectionMySQL():
         )
     except Exception as ex:
         raise ex
-
+"""
