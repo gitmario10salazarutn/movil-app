@@ -93,6 +93,16 @@ create table hiperbola(
     constraint pk_hiperbola primary key(id_hiperbola),
     constraint fk_punto_hiperbola foreign key(centro) references punto(id_punto)
 );
+create table empresa(
+    id_empresa serial not null primary key,
+    nombre_empresa varchar(100) not null,
+    matriz varchar(100) not null,
+    pais varchar(100) not null,
+    provincia varchar(100) not null,
+    ciudad varchar(100) not null,
+    valor_empresa numeric(8, 2) not null,
+    numero_empleados integer not null
+);
 insert into punto(coord_x, coord_y)
 values(-1, 3);
 insert into punto(coord_x, coord_y)

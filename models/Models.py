@@ -863,3 +863,84 @@ class Model:
                 return None
         except Exception as ex:
             raise Exception(ex)
+
+
+    # Personas
+    @classmethod
+    def get_empresas(self):
+        try:
+            connection = conn.get_connection()
+            cursor = connection.cursor()
+            cursor.execute(
+                "select id_empresa, nombre_empresa, matriz, pais, provincia, ciudad, valor_empresa, numero_empleados from empresa")
+            result = cursor.fetchall()
+            connection.close()
+            persons = entities.Entity.listEmpresas(result)
+            return persons
+        except Exception as ex:
+            raise Exception(ex)
+
+    @classmethod
+    def get_empresa_byid(self, id):
+        try:
+            connection = conn.get_connection()
+            cursor = connection.cursor()
+            cursor.execute(
+                "select id_empresa, nombre_empresa, matriz, pais, provincia, ciudad, valor_empresa, numero_empleados from empresa where id_empresa = '{0}';".format(id))
+            result = cursor.fetchone()
+            connection.close()
+            person = entities.Entity.empresaEntity(result)
+            return person
+        except Exception as ex:
+            raise Exception(ex)
+
+    @classmethod
+    def create_empresa(self, data):
+        try:
+            connection = conn.get_connection()
+            with connection.cursor() as cursor:
+                cursor.execute("insert into empresa(nombre_empresa, matriz, pais, provincia, ciudad, valor_empresa, numero_empleados) values('{0}', '{1}', '{2}', '{3}', '{4}',{5}, {6}) RETURNING id_empresa".format(
+                    data['nombre_empresa'], data['matriz'], data['pais'], data['provincia'], data['ciudad'], data['valor_empresa'], data['numero_empleados']))
+                rows_affects = cursor.rowcount
+                id = cursor.fetchone()[0]
+                connection.commit()
+                if rows_affects > 0:
+                    e = self.get_empresa_byid(id)
+                    return e
+                else:
+                    return {'message': 'Error, Insert failed!'}
+        except Exception as ex:
+            raise Exception(ex)
+
+    @classmethod
+    def update_empresa(self, id_empresa, data):
+        try:
+            connection = conn.get_connection()
+            with connection.cursor() as cursor:
+                cursor.execute("UPDATE empresa SET nombre_empresa = '{0}', matriz = '{1}', pais = '{2}', provincia = '{3}', ciudad = '{4}', valor_empresa = {5}, numero_empleados = {6}  WHERE id_empresa = {7}".format(
+                    data['nombre_empresa'], data['matriz'], data['pais'], data['provincia'], data['ciudad'], data['valor_empresa'], data['numero_empleados'], id_empresa))
+                rows_affects = cursor.rowcount
+                connection.commit()
+                if rows_affects > 0:
+                    e = self.get_empresa_byid(id_empresa)
+                    return e
+                else:
+                    return {'message': 'Error, Update failed!'}
+        except Exception as ex:
+            raise Exception(ex)
+
+    @classmethod
+    def delete_empresa(self, id):
+        try:
+            connection = conn.get_connection()
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    "DELETE FROM empresa WHERE id_empresa = '{0}'".format(id))
+                row_affects = cursor.rowcount
+                connection.commit()
+                if row_affects > 0:
+                    return {'message': 'Company deleted successfully!'}
+                else:
+                    return {'message': 'Error, Delete person failed, person not found!'}
+        except Exception as ex:
+            raise Exception(ex)

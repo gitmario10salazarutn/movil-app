@@ -12,8 +12,26 @@ from fractions import Fraction
 import json
 
 # 01
+class Entity:
+    @classmethod
+    def empresaEntity(self, data) -> dict:
+        if data:
+            return {
+                "id_empresa": data[0],
+                "nombre_empresa": data[1],
+                "matriz": data[2],
+                "pais": data[3],
+                "provincia": data[4],
+                "ciudad": data[5],
+                "valor_empresa": data[6],
+                "numero_empleados": data[7],
+            }
+        else:
+            return None
 
-
+    @classmethod
+    def listEmpresas(self, entities) -> list:
+        return [self.empresaEntity(e) for e in entities]
 class Punto:
 
     def __init__(self, id_punto, coord_x, coord_y):
