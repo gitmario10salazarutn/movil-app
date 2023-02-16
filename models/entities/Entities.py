@@ -32,6 +32,28 @@ class Entity:
     @classmethod
     def listEmpresas(self, entities) -> list:
         return [self.empresaEntity(e) for e in entities]
+    
+    @classmethod
+    def empresaTour(self, data) -> dict:
+        if data:
+            return {
+                "id_tour": data[0],
+                "nombres": data[1],
+                "apellidos": data[2],
+                "destino": data[3],
+                "duracion": data[4],
+                "estado": data[5],
+                "numero_personas": data[6],
+                "costo": data[7],
+            }
+        else:
+            return None
+
+    @classmethod
+    def listTour(self, entities) -> list:
+        return [self.empresaTour(e) for e in entities]
+    
+    
 class Punto:
 
     def __init__(self, id_punto, coord_x, coord_y):

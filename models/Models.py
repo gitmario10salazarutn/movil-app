@@ -866,6 +866,7 @@ class Model:
 
 
     # Personas
+
     @classmethod
     def get_empresas(self):
         try:
@@ -942,5 +943,88 @@ class Model:
                     return {'message': 'Company deleted successfully!'}
                 else:
                     return {'message': 'Error, Delete person failed, person not found!'}
+        except Exception as ex:
+            raise Exception(ex)
+
+
+# ------------------------------------------------------------------
+
+
+    @classmethod
+    def get_Tours(self):
+        try:
+            connection = conn.get_connection()
+            cursor = connection.cursor()
+            cursor.execute(
+                "select * from tour")
+            result = cursor.fetchall()
+            connection.close()
+            persons = entities.Entity.listTour(result)
+            return persons
+        except Exception as ex:
+            raise Exception(ex)
+
+    @classmethod
+    def get_tour_byid(self, id):
+        try:
+            connection = conn.get_connection()
+            cursor = connection.cursor()
+            cursor.execute(
+                "select id_tour, nombres, apellidos, destino, duracion, estado, numero_personas, costo from tour where id_tour = '{0}';".format(id))
+            result = cursor.fetchone()
+            connection.close()
+            person = entities.Entity.empresaTour(result)
+            return person
+        except Exception as ex:
+            raise Exception(ex)
+
+    @classmethod
+    def create_tour(self, data):
+        try:
+            connection = conn.get_connection()
+            with connection.cursor() as cursor:
+                cursor.execute("insert into tour(nombres, apellidos, destino, duracion, estado, numero_personas, costo) values('{0}', '{1}', '{2}', '{3}', '{4}',{5}, {6}) RETURNING id_tour".format(
+                    data['nombres'], data['apellidos'], data['destino'], data['duracion'], data['estado'], data['numero_personas'], data['costo']))
+                rows_affects = cursor.rowcount
+                id = cursor.fetchone()[0]
+                connection.commit()
+                if rows_affects > 0:
+                    e = self.get_tour_byid(id)
+                    return e
+                else:
+                    return {'message': 'Error, Insert failed!'}
+        except Exception as ex:
+            raise Exception(ex)
+
+    @classmethod
+    def update_tour(self, id_empresa, data):
+        try:
+            connection = conn.get_connection()
+            with connection.cursor() as cursor:
+                cursor.execute("UPDATE tour SET nombres = '{0}', apellidos = '{1}', destino = '{2}', duracion = '{3}', estado = '{4}', numero_personas = {5}, costo = {6}  WHERE id_tour = {7}".format(
+                    data['nombres'], data['apellidos'], data['destino'], data['duracion'], data['estado'], data['numero_personas'], data['costo'], id_empresa))
+                rows_affects = cursor.rowcount
+                connection.commit()
+                if rows_affects > 0:
+                    e = self.get_tour_byid(id_empresa)
+                    return e
+                else:
+                    return {'message': 'Error, Update failed!'}
+        except Exception as ex:
+            raise Exception(ex)
+
+    @classmethod
+    def delete_tour(self, id):
+        try:
+            connection = conn.get_connection()
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    "DELETE FROM tour WHERE id_tour = '{0}'".format(id))
+                row_affects = cursor.rowcount
+                connection.commit()
+                if row_affects > 0:
+                    return {'message': 'Tour deleted successfully!'}
+                else:
+                    return {'message': 'Error, Delete tour failed, person not found!'}
         except Exception as ex:
             raise Exception(ex)

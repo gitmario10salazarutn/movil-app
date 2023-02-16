@@ -538,6 +538,8 @@ def get_elements_hiperbola():
         return jsonify({'message': 'Error {0}'.format(ex)}), 500
 
 
+
+
 @app.route('/get_empresas', methods=['GET'])
 def get_empresas():
     try:
@@ -602,6 +604,75 @@ def delete_empresa(id_empresa):
         return jsonify(row_affect)
     except Exception as ex:
         return jsonify({'message': 'Error {0}'.format(ex)}), 500
+
+
+
+@app.route('/get_tours', methods=['GET'])
+def get_tours():
+    try:
+        e = model.Model.get_Tours()
+        if e is None:
+            return jsonify({'message': 'Data not found!'}), 404
+        else:
+            return e
+    except Exception as ex:
+        return jsonify({'message': 'Error {0}'.format(ex)}), 500
+
+
+@app.route('/get_tour_byid/<id_empresa>', methods=['GET'])
+def get_tour_byid(id_empresa):
+    try:
+        e = model.Model.get_tour_byid(id_empresa)
+        print(e)
+        if e is None:
+            return jsonify({'message': 'Tour not found!'}), 404
+        else:
+            return e
+    except Exception as ex:
+        return jsonify({'message': 'Error {0}'.format(ex)}), 500
+
+
+@app.route('/create_tour', methods=['POST'])
+def create_tour():
+    try:
+        data = request.json
+        e = model.Model.create_tour(data)
+        if e is None:
+            return jsonify({'message': 'Data not found!'}), 404
+        else:
+            return jsonify({
+                'message': 'Tour inserted successfully!',
+                'point': e
+            })
+    except Exception as ex:
+        return jsonify({'message': 'Error {0}'.format(ex)}), 500
+
+
+@app.route('/update_tour/<id_empresa>', methods=['PUT'])
+def update_tour(id_empresa):
+    try:
+        data = request.json
+        e = model.Model.update_tour(id_empresa, data)
+        if e is None:
+            return jsonify({'message': 'Company updated failed, Point not found!'}), 404
+        else:
+            return jsonify({
+                'message': 'Tour updated successfully!',
+                'point': e
+            })
+    except Exception as ex:
+        return jsonify({'message': 'Error {0}'.format(ex)}), 500
+
+
+@app.route('/delete_tour/<id_empresa>', methods=['DELETE'])
+def delete_tour(id_empresa):
+    try:
+        row_affect = model.Model.delete_tour(id_empresa)
+        return jsonify(row_affect)
+    except Exception as ex:
+        return jsonify({'message': 'Error {0}'.format(ex)}), 500
+
+
 
 
 
