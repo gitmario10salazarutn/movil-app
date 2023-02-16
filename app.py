@@ -573,10 +573,7 @@ def create_empresa():
         if e is None:
             return jsonify({'message': 'Data not found!'}), 404
         else:
-            return jsonify({
-                'message': 'Company inserted successfully!',
-                'point': e
-            })
+            return e
     except Exception as ex:
         return jsonify({'message': 'Error {0}'.format(ex)}), 500
 
